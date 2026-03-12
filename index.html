@@ -84,6 +84,11 @@ font-size:18px;
 border-radius:6px;
 }
 
+.total{
+font-weight:bold;
+margin-top:5px;
+}
+
 </style>
 </head>
 
@@ -97,6 +102,7 @@ QR Restaurant Menu
 
 <div class="cart">
 <div id="cartItems"></div>
+<div id="cartTotal" class="total"></div>
 <button class="order-btn" onclick="sendOrder()">Place Order</button>
 </div>
 
@@ -105,7 +111,7 @@ QR Restaurant Menu
 const params = new URLSearchParams(window.location.search);
 const table = params.get("table") || "Unknown";
 
-const phone="917715075207";
+const phone="919999999999";
 
 const menuItems=[
 {name:"Veg Burger",price:120,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
@@ -183,14 +189,17 @@ renderMenu();
 function renderCart(){
 
 let text="";
+let total=0;
 
 Object.keys(cart).forEach(i=>{
 
 text+=`${menuItems[i].name} x ${cart[i]}<br>`;
+total+=menuItems[i].price*cart[i];
 
 });
 
 document.getElementById("cartItems").innerHTML=text;
+document.getElementById("cartTotal").innerHTML="Total: ₹"+total;
 
 }
 
@@ -198,11 +207,16 @@ function sendOrder(){
 
 let message=`New Order%0ATable:${table}%0A`;
 
+let total=0;
+
 Object.keys(cart).forEach(i=>{
 
 message+=`${menuItems[i].name} x ${cart[i]}%0A`;
+total+=menuItems[i].price*cart[i];
 
 });
+
+message+=`Total: ₹${total}`;
 
 window.open(`https://wa.me/${phone}?text=${message}`);
 
@@ -213,6 +227,4 @@ renderMenu();
 </script>
 
 </body>
-
 </html>
-
