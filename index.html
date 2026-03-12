@@ -111,7 +111,7 @@ QR Restaurant Menu
 const params = new URLSearchParams(window.location.search);
 const table = params.get("table") || "Unknown";
 
-const phone="917715075207";
+const phone="919999999999";
 
 const menuItems=[
 {name:"Veg Burger",price:120,img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
@@ -205,20 +205,30 @@ document.getElementById("cartTotal").innerHTML="Total: ₹"+total;
 
 function sendOrder(){
 
-let message=`New Order%0ATable:${table}%0A`;
-
+let message=`New Order\nTable: ${table}\n\n`;
 let total=0;
+let summary="";
 
 Object.keys(cart).forEach(i=>{
-
-message+=`${menuItems[i].name} x ${cart[i]}%0A`;
+summary+=`${menuItems[i].name} x ${cart[i]}\n`;
 total+=menuItems[i].price*cart[i];
-
 });
 
-message+=`Total: ₹${total}`;
+summary+=`\nTotal: ₹${total}`;
 
-window.open(`https://wa.me/${phone}?text=${message}`);
+let confirmOrder = confirm(
+`Confirm Order?\n\nTable: ${table}\n\n${summary}`
+);
+
+if(!confirmOrder){
+return;
+}
+
+message+=summary;
+
+const encodedMessage=encodeURIComponent(message);
+
+window.open(`https://wa.me/${phone}?text=${encodedMessage}`);
 
 }
 
@@ -228,4 +238,3 @@ renderMenu();
 
 </body>
 </html>
-
