@@ -1,2 +1,0 @@
-# Menu
-QR code Menu
